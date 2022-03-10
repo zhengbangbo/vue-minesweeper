@@ -3,7 +3,7 @@
 interface BlockState {
   x: number
   y: number
-  revealed?: boolean
+  revealed: boolean
   mine?: boolean
   flagged?: boolean
   adjacentMines: number
@@ -17,6 +17,7 @@ const state = reactive(
       (_, x): BlockState => ({
         x, y,
         adjacentMines: 0,
+        revealed: false,
       }),
     ),
   ),
@@ -25,7 +26,7 @@ const state = reactive(
 function generateMines() {
   for (const row of state) {
     for (const block of row) {
-      block.mine = Math.random() < 0.3
+      block.mine = Math.random() < 0.2
     }
   }
 }
@@ -70,11 +71,15 @@ function updateNumbers() {
   })
 }
 
-function onClick(x: number, y: number) {
-  console.log(`Clicked at ${x}, ${y}`);
+function onClick(block: BlockState) {
+  block.revealed = true
+  if (block.mine)
+    alert('BOOOOOOM!!!')
 }
 
 function getBlockClass(block: BlockState) {
+  if (!block.revealed)
+    return 'bg-gray-500/10'
   return block.mine ? 'bg-red-500/75' : numberColors[block.adjacentMines]
 }
 
@@ -90,22 +95,24 @@ updateNumbers()
       flex="~"
       items-center justify-center
       :key="y">
+
       <button 
-      v-for="item, x in row"
+      v-for="block, x in row"
       :key="x"
       flex="~"
       items-center justify-center
       w-10 h-10 m='0.5'
       hover="bg-gray/25"
       border="1.5 gray-400/10" 
-      :class="getBlockClass(item)"
-      @click="onClick(x, y)"
+      :class="getBlockClass(block)"
+      @click="onClick(block)"
       >
-
-      <div v-if="item.mine" i-mdi:mine/>
-      <div v-else>
-        {{ item.adjacentMines }}
-      </div>
+      <template v-if="block.revealed">
+        <div v-if="block.mine" i-mdi:mine/>
+        <div v-else>
+          {{ block.adjacentMines }}
+        </div>
+      </template> 
       </button>
     </div>
   </div>
