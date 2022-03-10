@@ -1,50 +1,113 @@
 <script setup lang="ts">
-const name = ref('')
 
-const router = useRouter()
-const go = () => {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
+interface BlockState {
+  x: number
+  y: number
+  revealed?: boolean
+  mine?: boolean
+  flagged?: boolean
+  adjacentMines: number
 }
+
+const WIDTH = 10
+const HEIGHT = 10
+const state = reactive(
+  Array.from({ length: HEIGHT }, (_, y) =>
+    Array.from({ length: WIDTH },
+      (_, x): BlockState => ({
+        x, y,
+        adjacentMines: 0,
+      }),
+    ),
+  ),
+)
+
+function generateMines() {
+  for (const row of state) {
+    for (const block of row) {
+      block.mine = Math.random() < 0.3
+    }
+  }
+}
+
+const directions = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
+]
+
+const numberColors = [
+  'text-transparent',
+  'text-gray-500',
+  'text-blue-500',
+  'text-green-500',
+  'text-yellow-500',
+  'text-red-500',
+  'text-orange-500',
+  'text-purple-500',
+]
+
+function updateNumbers() {
+  state.forEach((row, y) => {
+    row.forEach((block, x) => {
+      if (block.mine) 
+        return
+      
+      directions.forEach(([dx, dy]) => {
+        const x2 = x + dx
+        const y2 = y + dy
+        if (x2 < 0 || x2 >= WIDTH || y2 < 0 || y2 >= HEIGHT) 
+          return
+        if (state[y2][x2].mine) 
+          block.adjacentMines += 1
+      })
+      })
+  })
+}
+
+function onClick(x: number, y: number) {
+  console.log(`Clicked at ${x}, ${y}`);
+}
+
+function getBlockClass(block: BlockState) {
+  return block.mine ? 'bg-red-500/75' : numberColors[block.adjacentMines]
+}
+
+generateMines()
+updateNumbers()
 </script>
 
 <template>
   <div>
-    <div i-carbon-campsite text-4xl inline-block />
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse-lite" target="_blank">
-        Vitesse Lite
-      </a>
-    </p>
-    <p>
-      <em text-sm op75>Opinionated Vite Starter Template</em>
-    </p>
-
-    <div py-4 />
-
-    <input
-      id="input"
-      v-model="name"
-      placeholder="What's your name?"
-      type="text"
-      autocomplete="false"
-      p="x-4 y-2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-      @keydown.enter="go"
-    >
-
-    <div>
-      <button
-        class="m-3 text-sm btn"
-        :disabled="!name"
-        @click="go"
+    Minesweeper
+    <div p5>
+    <div v-for="row, y in state"
+      flex="~"
+      items-center justify-center
+      :key="y">
+      <button 
+      v-for="item, x in row"
+      :key="x"
+      flex="~"
+      items-center justify-center
+      w-10 h-10 m='0.5'
+      hover="bg-gray/25"
+      border="1.5 gray-400/10" 
+      :class="getBlockClass(item)"
+      @click="onClick(x, y)"
       >
-        Go
+
+      <div v-if="item.mine" i-mdi:mine/>
+      <div v-else>
+        {{ item.adjacentMines }}
+      </div>
       </button>
     </div>
+  </div>
   </div>
 </template>
