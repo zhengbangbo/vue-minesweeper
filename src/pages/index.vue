@@ -1,16 +1,9 @@
 <script setup lang="ts">
-interface BlockState {
-  x: number
-  y: number
-  revealed: boolean
-  mine?: boolean
-  flagged?: boolean
-  adjacentMines: number
-}
+import type { BlockState } from '~/types'
 
 const WIDTH = 10
 const HEIGHT = 10
-const state = reactive(
+const state = ref(
   // Array.from 将类似数组的转化为数组
   Array.from({ length: HEIGHT }, (_, y) =>
     Array.from({ length: WIDTH },
@@ -26,7 +19,7 @@ const state = reactive(
 
 const MINES_PROBABILITY = 0.2
 function generateMines(initial: BlockState) {
-  for (const row of state) {
+  for (const row of state.value) {
     for (const block of row) {
       if (Math.abs(initial.x - block.x) < 1 && Math.abs(initial.y - block.y) < 1)
         continue
@@ -48,7 +41,7 @@ const directions = [
 ]
 
 function updateAdjacentMines() {
-  state.forEach((row, y) => {
+  state.value.forEach((row, y) => {
     row.forEach((block, x) => {
       if (block.mine)
         return
@@ -68,7 +61,7 @@ function getSiblings(block: BlockState) {
     if (ax < 0 || ax >= WIDTH || ay < 0 || ay >= HEIGHT)
       return undefined
 
-    return state[ay][ax]
+    return state.value[ay][ax]
   }).filter(Boolean) as BlockState[]
 }
 
@@ -126,7 +119,7 @@ function onClick(block: BlockState) {
 watchEffect(checkGameState)
 
 function checkGameState() {
-  const blocks = state.flat()
+  const blocks = state.value.flat()
   if (blocks.every(block => block.revealed || (block.flagged && block.mine)))
     alert('You win!')
 }
