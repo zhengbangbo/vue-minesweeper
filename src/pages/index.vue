@@ -3,7 +3,7 @@ import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
 import Confetti from '~/components/Confetti.vue'
 
-const play = new GamePlay(5, 5, 3)
+const play = new GamePlay(15, 5, 3)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
 
@@ -25,7 +25,7 @@ watchEffect(() => {
         v-for="row, y in state"
         :key="y"
         flex="~" items-center
-        justify-center w-max
+        justify-center
       >
         <MineBlock
           v-for="block, x in row" :key="x"
