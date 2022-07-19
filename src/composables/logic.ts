@@ -1,3 +1,4 @@
+import { METHODS } from 'http'
 import type { Ref } from 'vue'
 import type { BlockState } from '~/types'
 
@@ -25,12 +26,17 @@ export class GamePlay {
   constructor(
     public width: number,
     public height: number,
+    public mines: number,
   ) {
     this.reset()
   }
 
   get board() {
     return this.state.value.board
+  }
+
+  get blocks() {
+    return this.board.flat()
   }
 
   reset() {
@@ -50,19 +56,38 @@ export class GamePlay {
     }
   }
 
-  generateMines(state: BlockState[][], initial: BlockState) {
-    for (const row of this.state.value.board) {
-      for (const block of row) {
-        if (Math.abs(initial.x - block.x) < 1 && Math.abs(initial.y - block.y) < 1)
-          continue
-        block.mine = Math.random() < this.MINES_PROBABILITY
-      }
-    }
-    this.updateAdjacentMines(state)
+  random(min: number, max: number) {
+    return Math.random() * (max - min) + min
   }
 
-  updateAdjacentMines(state: BlockState[][]) {
-    state.forEach((row) => {
+  randomInt(min: number, max: number) {
+    return Math.round(this.random(min, max))
+  }
+
+  generateMines(state: BlockState[][], initial: BlockState) {
+    const placeRandom = () => {
+      const x = this.randomInt(0, this.width - 1)
+      const y = this.randomInt(0, this.height - 1)
+      const block = state[y][x]
+      if (Math.abs(initial.x - block.x) < 1 && Math.abs(initial.y - block.y) < 1)
+        return false
+      if (block.mine)
+        return false
+      block.mine = true
+      return true
+    }
+
+    Array.from({ length: this.mines }, () => null)
+      .forEach(() => {
+        let placed = false
+        while (!placed)
+          placed = placeRandom()
+      })
+    this.updateAdjacentMines()
+  }
+
+  updateAdjacentMines() {
+    this.board.forEach((row) => {
       row.forEach((block) => {
         if (block.mine)
           return

@@ -2,9 +2,13 @@
 import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
 
-const play = new GamePlay(5, 5)
+const play = new GamePlay(5, 5, 4)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
+
+const mineCount = computed(() => {
+  return play.blocks.reduce((a, b) => a + (b.mine ? 1 : 0), 0)
+})
 
 watchEffect(() => {
   play.checkGameState()
@@ -30,6 +34,9 @@ watchEffect(() => {
           @contextmenu.prevent="play.onRightClick(block)"
         />
       </div>
+    </div>
+    <div>
+      Count: {{ mineCount }}
     </div>
     <div flex="~" justify-center gap-1>
       <button btn @click="toggleDev()">
