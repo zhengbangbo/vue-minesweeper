@@ -2,7 +2,7 @@
 import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
 
-const play = new GamePlay(5, 5, 4)
+const play = new GamePlay(10, 10, 30)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
 
@@ -19,16 +19,16 @@ watchEffect(() => {
   <div>
     Minesweeper
 
-    <div p5>
+    <div p5 w-full overflow-auto>
       <div
         v-for="row, y in state"
         :key="y"
         flex="~" items-center
-        justify-center
+        justify-center w-max
       >
         <MineBlock
-          v-for="block, x in row"
-          :key="x"
+          v-for="block, x in row" :key="x"
+          w-max
           :block="block"
           @click="play.onClick(block)"
           @contextmenu.prevent="play.onRightClick(block)"
@@ -38,7 +38,7 @@ watchEffect(() => {
     <div>
       Count: {{ mineCount }}
     </div>
-    <div flex="~" justify-center gap-1>
+    <div flex="~ gap-1" justify-center>
       <button btn @click="toggleDev()">
         {{ isDev ? 'DEV' : 'NORMAL' }}
       </button>
