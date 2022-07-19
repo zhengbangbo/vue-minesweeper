@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
+import Confetti from '~/components/Confetti.vue'
 
-const play = new GamePlay(10, 10, 30)
+const play = new GamePlay(5, 5, 3)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
 
@@ -47,4 +48,5 @@ watchEffect(() => {
       </button>
     </div>
   </div>
+  <Confetti :passed="play.state.value.gameState === 'won'" />
 </template>
