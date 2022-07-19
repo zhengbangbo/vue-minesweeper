@@ -1,4 +1,3 @@
-import { METHODS } from 'http'
 import type { Ref } from 'vue'
 import type { BlockState } from '~/types'
 
