@@ -5,6 +5,7 @@
     "build": "vite build",
     "dev": "vite --port 3333 --open",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest"
@@ -16,13 +17,13 @@
     "vue-router": "^4.1.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.25.2",
     "@iconify-json/carbon": "^1.1.6",
     "@iconify-json/mdi": "^1.1.29",
     "@types/node": "^18.0.6",
     "@unocss/reset": "^0.44.3",
     "@vitejs/plugin-vue": "^3.0.1",
     "@vue/test-utils": "^2.0.2",
+    "@zhengbangbo/eslint-config-vue": "^0.0.7",
     "eslint": "^8.20.0",
     "jsdom": "^20.0.0",
     "pnpm": "^6.33.1",
@@ -36,6 +37,6 @@
     "vue-tsc": "^0.38.8"
   },
   "eslintConfig": {
-    "extends": "@antfu"
+    "extends": "@zhengbangbo/eslint-config-vue"
   }
 }

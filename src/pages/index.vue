@@ -3,7 +3,7 @@ import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
 import Confetti from '~/components/Confetti.vue'
 
-const play = new GamePlay(15, 5, 3)
+const play = new GamePlay(10, 10, 25)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
 
