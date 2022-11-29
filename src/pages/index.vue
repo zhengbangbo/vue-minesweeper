@@ -3,12 +3,18 @@ import MineBlock from '~/components/MineBlock.vue'
 import { GamePlay, isDev, toggleDev } from '~/composables'
 import Confetti from '~/components/Confetti.vue'
 
-const play = new GamePlay(10, 10, 25)
+// const play = new GamePlay(10, 10, 25)
+const play = new GamePlay(5, 5, 3)
 useStorage('bobsweeper-state', play.state)
 const state = computed(() => play.board)
 
 const mineCount = computed(() => {
   return play.blocks.reduce((a, b) => a + (b.mine ? 1 : 0), 0)
+})
+
+onKeyStroke(['r', 'R'], (e) => {
+  e.preventDefault()
+  play.reset()
 })
 
 watchEffect(() => {

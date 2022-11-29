@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { isDark, toggleDark } from '~/composables'
+import Controls from '~/components/Controls.vue'
 </script>
 
 <template>
@@ -17,5 +18,25 @@ import { isDark, toggleDark } from '~/composables'
       target="_blank"
       title="GitHub"
     />
+
+    <button class="icon-btn !outline-none">
+      <div i-carbon-help />
+      <div class="popover" w-128>
+        <Controls />
+      </div>
+    </button>
   </nav>
 </template>
+
+<style scoped>
+.popover {
+  display: none;
+  position: absolute;
+  top: -1px;
+  right: calc(50% - 16rem)
+}
+
+button:hover .popover {
+  display: block;
+}
+</style>
