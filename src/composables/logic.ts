@@ -132,7 +132,8 @@ export class GamePlay {
       this.generateMines(this.state.value.board, block)
       this.state.value.mineGenerated = true
     }
-    block.revealed = true
+    if (!block.flagged)
+      block.revealed = true
     if (block.mine) {
       this.state.value.gameState = 'lost'
       this.showAllMine()
