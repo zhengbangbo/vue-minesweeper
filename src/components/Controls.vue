@@ -4,9 +4,9 @@
 
 <template>
   <div class="rounded-lg bg-white p-8 shadow-2xl w-full">
-    <h2 class="text-lg font-bold">
+    <h1 class="text-lg font-bold">
       Controls
-    </h2>
+    </h1>
     <h3>
       Desktop
     </h3>

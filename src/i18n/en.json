@@ -1,0 +1,11 @@
+{
+  "message": {
+    "count": "count: {mineCount}"
+  },
+  "button": {
+    "minesweeper": "Minesweeper",
+    "normal": "normal",
+    "reset": "reset",
+    "dev": "dev"
+  }
+}

@@ -16,10 +16,8 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-
     // https://github.com/hannoeru/vite-plugin-pages
     Pages(),
-
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: [
@@ -29,17 +27,14 @@ export default defineConfig({
       ],
       dts: true,
     }),
-
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: true,
     }),
-
     // https://github.com/antfu/unocss
     // see unocss.config.ts for config
     Unocss(),
   ],
-
   // https://github.com/vitest-dev/vitest
   test: {
     environment: 'jsdom',

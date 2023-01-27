@@ -1,0 +1,11 @@
+{
+  "message": {
+    "count": "合计：{mineCount}"
+  },
+  "button": {
+    "minesweeper": "扫雷",
+    "normal": "正常",
+    "reset": "重置",
+    "dev": "开发"
+  }
+}

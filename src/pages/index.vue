@@ -24,8 +24,15 @@ watchEffect(() => {
 
 <template>
   <div>
-    Minesweeper
-
+    {{ $t('button.minesweeper') }}
+    <div flex="~ gap-1" pt-3 justify-center>
+      <button btn @click="toggleDev()">
+        {{ isDev ? $t('button.dev') : $t('button.normal') }}
+      </button>
+      <button btn @click="play.reset()">
+        {{ $t('button.reset') }}
+      </button>
+    </div>
     <div p5 w-full overflow-auto>
       <div
         v-for="row, y in state"
@@ -43,15 +50,7 @@ watchEffect(() => {
       </div>
     </div>
     <div>
-      Count: {{ mineCount }}
-    </div>
-    <div flex="~ gap-1" justify-center>
-      <button btn @click="toggleDev()">
-        {{ isDev ? 'DEV' : 'NORMAL' }}
-      </button>
-      <button btn @click="play.reset()">
-        RESET
-      </button>
+      {{ $t('message.count', { mineCount }) }}
     </div>
   </div>
   <Confetti :passed="play.state.value.gameState === 'won'" />

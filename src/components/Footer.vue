@@ -38,5 +38,6 @@ import Controls from '~/components/Controls.vue'
 
 button:hover .popover {
   display: block;
+  top: 3rem
 }
 </style>
